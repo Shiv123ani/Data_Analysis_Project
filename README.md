@@ -90,9 +90,9 @@ Again run same script to check for changes in both column.
 
          select distinct reason_start,distinct reason_start from spotify_history;
 
-     Business Questions:
+Business Questions:
      
-     Impact of shuffle mode on listening behaviour:
+Impact of shuffle mode on listening behaviour:
 
 1. Do users play a more diverse range of tracks when shuffle mode is enabled?
 
@@ -100,7 +100,8 @@ Again run same script to check for changes in both column.
 
      ![image](https://github.com/user-attachments/assets/95b7bd8e-f2d3-4afe-9e5b-1eda4e952858)
 
-   Insights
+   Insights:
+
    Users tend to listen to a wider variety of tracks when shuffle is OFF(Diasabled)
 
 3. What percentage of tracks played in shuffle mode are interrupted (reason_end)?
@@ -111,7 +112,8 @@ Again run same script to check for changes in both column.
 
    ![image](https://github.com/user-attachments/assets/75cc456c-48bb-4854-baef-1ef590a51a6c)
 
-   Insights
+   Insights:
+   
    The percentage of interuption rate is higher when shuffle mode is enabled(54.03%) as compared to when its turned off (32.42%)
 
 5. Which platforms have the highest shuffle mode usage?
@@ -121,7 +123,8 @@ Again run same script to check for changes in both column.
          
       ![image](https://github.com/user-attachments/assets/c82cfef9-322c-44d8-8126-6febb9b8f418)
 
-   Insights
+   Insights:
+   
    The highest shuffle mode was Andriod with 107754 shuffle plays when enabled and 31808 when disabled
 
 7. What percentage of tracks are stopped early versus completed?
@@ -133,7 +136,8 @@ Again run same script to check for changes in both column.
 
      ![image](https://github.com/user-attachments/assets/d6767084-f203-4892-bb22-5d55eb411ba6)
 
-   Insights
+   Insights:
+   
    The percentage of tracks stopped early was 48.63% compared to completed which is 51.37%.
 
 9. Does the platform or shuffle mode influence track completion rates? 
@@ -145,7 +149,8 @@ Again run same script to check for changes in both column.
         
    ![image](https://github.com/user-attachments/assets/ed05ef05-d3cd-46b1-8b72-336af48f0b2c)
 
-  Insights
+  Insights:
+  
   Platform completion rate is higher when shufle mode is enabled
 
 11. Which platforms have the longest average playback duration?
@@ -160,7 +165,8 @@ Again run same script to check for changes in both column.
           
    ![image](https://github.com/user-attachments/assets/786a2ff3-2a81-4dfb-8f26-6bc155b8f4d1)
 
-  Insights
+  Insights:
+  
   Mac platform has the highest avaerage playback with 3:57 mins.
 
 11. Are there specific hours or days where platform usage peaks?
@@ -170,7 +176,8 @@ Again run same script to check for changes in both column.
           
    ![image](https://github.com/user-attachments/assets/80763d9b-391e-4c28-a759-57335f808b5f)
 
- Insights
+ Insights:
+ 
  At 0hrs the peak usage 10862
 
 12. What are most popular hours for streaming across diffrent platforms?
@@ -192,7 +199,8 @@ Again run same script to check for changes in both column.
           
    ![image](https://github.com/user-attachments/assets/e6b51236-963f-4df1-b4ac-d2a9311070ce)
 
- Insights
+ Insights:
+ 
  At midnight (0hrs) andriod recorded the highest usage at 10,443 streams.
 
  At 5pm( 17hrs) Cast device recorded highest usage at 515 streams.
@@ -211,7 +219,8 @@ Again run same script to check for changes in both column.
    ![image](https://github.com/user-attachments/assets/c6673402-6e28-40e2-ac3c-080bbd031001)
 
 
-  Insights
+  Insights:
+  
   Most frequently played tracks are The Boxer ,First Youth	 and Not in Nottingham	during peak hours.
 
 
