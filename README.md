@@ -19,6 +19,8 @@ The dictionary file is "Sportify_data_dictionary.csv"
 Migration of Data in MySQL
 
  The dataset imported using below MySQL script and a total of 149,980 rows were imported.
+         LOAD DATA LOCAL INFILE 'C:\\Users\\Admin\\Downloads\\Spotify\\spotify_history.csv' INTO TABLE spotify_history 
+         FIELDS terminated by ',' enclosed by '"' lines terminated by '\n' ignore 1 rows;
 
  ![image](https://github.com/user-attachments/assets/b58afc8b-9706-43be-9d99-a43a22e18262)
 
@@ -29,68 +31,47 @@ Migration of Data in MySQL
 
 1. Change the column name 'ï»¿spotify_track_uri' to 'track_url' to make analysis easy
 
-     ALTER TABLE spotify_history CHANGE ï»¿spotify_track_uri track_url VARCHAR(500);
+       ALTER TABLE spotify_history CHANGE ï»¿spotify_track_uri track_url VARCHAR(500);
 
    ![image](https://github.com/user-attachments/assets/b1b1b0c6-89ef-448e-96cf-4216d6fe0623)
 
 3. Add stop_time column using ms_played column i.e songs played in milliseconds and row_number which is one of window function through 
    below MySQL script to look for duplicates in dataset.
 
-     SELECT *
-FROM (
-    SELECT *,
-           ts AS start_time,
+           SELECT * FROM (SELECT *, ts AS start_time,
            DATE_ADD(ts,interval floor(ms_played/1000) second) AS stop_time,
-           round((ms_played / 60000),2) AS minutes,
-           ROW_NUMBER() OVER (
-               PARTITION BY track_url,ts, platform, ms_played, track_name, artist_name, album_name, 
-               reason_start, reason_end, shuffle, skipped
-               ORDER BY ts
-           ) AS rn
-    FROM spotify_history
-) t;
+           round((ms_played / 60000),2) AS minutes,ROW_NUMBER() OVER (PARTITION BY track_url,ts, platform, ms_played, track_name, 
+           artist_name, album_name, 
+           reason_start, reason_end, shuffle, skipped
+           ORDER BY ts) AS rn FROM spotify_history) t;
 
-You can see stop_time column added and cannot find duplicates as row_number for all rows is 1 .
+   You can see stop_time column added and cannot find duplicates as row_number for all rows is 1 .
 
    ![image](https://github.com/user-attachments/assets/1c6a3e9e-43e3-486b-aa01-9df52ce1b591)
 
   4. Add row_id column to give a specified number to each row.
 
-        ALTER TABLE spotify_history ADD COLUMN row_id INT AUTO_INCREMENT PRIMARY KEY;
+            ALTER TABLE spotify_history ADD COLUMN row_id INT AUTO_INCREMENT PRIMARY KEY;
      ![image](https://github.com/user-attachments/assets/d3bb34b0-e8b3-429d-9e21-63f500b0fe49)
 
   5. Using row_id in combination with row_number to find number of duplicates in datasets .
      You can see in total 1185 dupliactes found.
 
-       SELECT row_id 
-FROM (
-    SELECT row_id, 
-           ROW_NUMBER() OVER (
+            SELECT row_id FROM (
+            SELECT row_id, ROW_NUMBER() OVER (
                PARTITION BY track_url, ts,platform, ms_played, track_name, 
                             artist_name, album_name, reason_start, 
-                            reason_end, shuffle, skipped
-           ) AS rn 
-    FROM spotify_history
-) t
-WHERE rn > 1;
+                            reason_end, shuffle, skipped) AS rn FROM spotify_history) t WHERE rn > 1;
 
      ![image](https://github.com/user-attachments/assets/f3c6817a-3326-40ec-aac1-feb779686719)
 
  7. Delete those duplicate rows using following script.
     1185 duplicates deleted
 
-        delete from spotify_history where row_id in(
-SELECT row_id 
-FROM (
-    SELECT row_id, 
-           ROW_NUMBER() OVER (
-               PARTITION BY track_url,ts, platform, ms_played, track_name, 
-                            artist_name, album_name, reason_start, 
-                            reason_end, shuffle, skipped
-           ) AS rn 
-    FROM spotify_history
-) t
-WHERE rn > 1);
+              delete from spotify_history where row_id in(
+              SELECT row_id FROM (SELECT row_id, 
+              ROW_NUMBER() OVER (PARTITION BY track_url,ts, platform, ms_played, track_name,artist_name, album_name, reason_start, 
+              reason_end, shuffle, skipped) AS rn FROM spotify_history) t WHERE rn > 1);
    ![image](https://github.com/user-attachments/assets/6708a9f8-7225-4537-835d-69dcf5602ef6)
 
  8. Checking for null values in reason_start and reason_end and delete all null values.
@@ -104,7 +85,7 @@ WHERE rn > 1);
         reason_end =case when reason_end is null or reason_end='' then 'unknown' else reason_end end;
     ![image](https://github.com/user-attachments/assets/122fc55b-0745-4899-bfa3-88cac1f05ef6)
 
-    Again run same script to check for changes in both column.
+Again run same script to check for changes in both column.
 
          select distinct reason_start,distinct reason_start from spotify_history;
 
@@ -156,7 +137,7 @@ WHERE rn > 1);
           select platform  ,round(avg(ms_played / 60000),2) as average_playback from spotify_history 
           group by platform order by average_playback desc;
 
-          You can also get only top 3 platformm by using limit 3.
+   You can also get only top 3 platformm by using limit 3.
 
           select platform  ,round(avg(ms_played / 60000),2) as average_playback from spotify_history 
           group by platform order by average_playback desc limit 3;
@@ -173,14 +154,14 @@ WHERE rn > 1);
 
 8. What are most popular hours for straming across diffrent platforms?
 
-          Solution 1:
+   Solution 1:
           
           select platform ,hour(ts) as hours,count(*) as total_usage from spotify_history group by platform,
           hour(ts) order by total_usage desc;
 
    ![image](https://github.com/user-attachments/assets/6d15e2c5-b287-411f-a674-5f3b39343806)
 
-          Solution 2:
+   Solution 2:
           In this solution 2 ,used CTE and row_number to get more accurate answer.
 
           with most_usage as (select platform ,hour(ts) as peak_hour ,count(hour(ts)) as total_usage ,row_number() 
@@ -191,7 +172,7 @@ WHERE rn > 1);
    ![image](https://github.com/user-attachments/assets/e6b51236-963f-4df1-b4ac-d2a9311070ce)
 
 9. Which tracks are most frequently played during peak hours? 
-          Again used CTE to find answer.
+   Again used CTE to find answer.
           
           with peakhours as (select hour(ts) as peak_hour from spotify_history 
           group by hour(ts) order by count(*) desc limit 1)
