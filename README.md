@@ -108,17 +108,17 @@ WHERE rn > 1);
 
     select distinct reason_start,distinct reason_start from spotify_history;
 
- Business Questions:
+     Business Questions:
      
      Impact of shuffle mode on listening behaviour:
 
-     1. Do users play a more diverse range of tracks when shuffle mode is enabled?
+1. Do users play a more diverse range of tracks when shuffle mode is enabled?
 
      select shuffle ,count(distinct track_name) as unique_tracks_played from spotify_history  group by shuffle ;
 
      ![image](https://github.com/user-attachments/assets/95b7bd8e-f2d3-4afe-9e5b-1eda4e952858)
 
-     2. What percentage of tracks played in shuffle mode are interrupted (reason_end)?
+2. What percentage of tracks played in shuffle mode are interrupted (reason_end)?
 
       select shuffle ,count(*) as total_shuffle_plays ,sum(case when reason_end <> 'trackdone' then 1 else 0 end ) as 
       interrupted_tracks ,cast(round(sum(case when reason_end <> 'trackdone' then 1 else 0 end )*100.0 /count(*),2) as decimal (5,2)) as 
@@ -126,14 +126,14 @@ WHERE rn > 1);
 
       ![image](https://github.com/user-attachments/assets/75cc456c-48bb-4854-baef-1ef590a51a6c)
 
-    3. Which platforms have the highest shuffle mode usage?
+3. Which platforms have the highest shuffle mode usage?
 
       select platform ,count(shuffle) as total_play from spotify_history group by platform
       order by total_play desc ;
          
       ![image](https://github.com/user-attachments/assets/c82cfef9-322c-44d8-8126-6febb9b8f418)
 
-     4. What percentage of tracks are stopped early versus completed?
+4. What percentage of tracks are stopped early versus completed?
 
        select count(*) as total_tracks_played ,sum(case when reason_end='trackdone' then 1 else 0 end) as complated_tracks ,sum(case 
        when reason_end<>'trackdone' then 1 else 0 end) as stopped_early,cast(round(sum(case when reason_end<>'trackdone' then 1 else 0 
@@ -142,7 +142,7 @@ WHERE rn > 1);
 
        ![image](https://github.com/user-attachments/assets/d6767084-f203-4892-bb22-5d55eb411ba6)
 
-     5. Does the platform or shuffle mode influence track completion rates? 
+5. Does the platform or shuffle mode influence track completion rates? 
 
         select platform ,shuffle ,count(*) as total_played ,sum(case when reason_end='trackdone' then 1 else 0 end) as 
         track_completed_count,cast(round(sum(case when reason_end='trackdone' then 1 else 0 end)*100.0/count(*),2) as 
@@ -151,7 +151,7 @@ WHERE rn > 1);
         
         ![image](https://github.com/user-attachments/assets/ed05ef05-d3cd-46b1-8b72-336af48f0b2c)
 
-      6. Which platforms have the longest average playback duration?
+6. Which platforms have the longest average playback duration?
 
           select platform  ,round(avg(ms_played / 60000),2) as average_playback from spotify_history 
           group by platform order by average_playback desc;
@@ -164,14 +164,14 @@ WHERE rn > 1);
          ![image](https://github.com/user-attachments/assets/786a2ff3-2a81-4dfb-8f26-6bc155b8f4d1)
 
 
-       7. Are there specific hours or days where platform usage peaks?
+7. Are there specific hours or days where platform usage peaks?
 
           select hour(ts) as hours,count(*) as total_usage from spotify_history group by 
           hour(ts) order by total_usage desc;
           
           ![image](https://github.com/user-attachments/assets/80763d9b-391e-4c28-a759-57335f808b5f)
 
-       8. What are most popular hours for straming across diffrent platforms?
+8. What are most popular hours for straming across diffrent platforms?
 
           Solution 1:
           
@@ -190,7 +190,7 @@ WHERE rn > 1);
           
           ![image](https://github.com/user-attachments/assets/e6b51236-963f-4df1-b4ac-d2a9311070ce)
 
-       9. Which tracks are most frequently played during peak hours? 
+9. Which tracks are most frequently played during peak hours? 
           Again used CTE to find answer.
           
           with peakhours as (select hour(ts) as peak_hour from spotify_history 
