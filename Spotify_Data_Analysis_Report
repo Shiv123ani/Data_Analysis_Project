@@ -1,13 +1,13 @@
-**Spotify Listening Behavior Analysis Using SQL**
+Spotify Listening Behavior Analysis Using SQL
 
-**Author:** Shivani Tiwari
-**Date:** 22 Feb 2025 
-**Client/Company:** Spotify  
+Author:          Shivani Tiwari
+Date:            22 Feb 2025 
+Client/Company:  Spotify  
 
 ---
 
-## **1. Executive Summary**
-### **Objective:**  
+**1. Executive Summary**
+**Objective:**  
 Spotify aims to enhance user engagement by optimizing shuffle mode and improving track completion rates. This analysis investigates how shuffle mode impacts listening behavior, identifies patterns in track interruptions, and explores platform-specific performance trends.
 
 ### **Key Findings:**  
