@@ -1,7 +1,7 @@
 **Spotify Listening Behavior Analysis Using SQL**
 
-**Author:**         Shivani Tiwari 
-**Date:**           22 Feb 2025
+**Author:**         Shivani Tiwari\
+**Date:**           22 Feb 2025\
 **Client/Company:** Spotify  
 
 ---
